@@ -1,0 +1,22 @@
+{% extends "catalog/base_generic.html" %}
+
+{% block title %} <title>Local JY Library Home</title>{% endblock %}
+
+{% block content %}
+<div class="container_index">
+    <header id="container_title">Local Library Home</header>
+    <p id="container_p">Welcome to LoclaLibrary, a website developed by <em>Jiyoung Developer Network</em>!</p>
+    <div class="content_index">
+        <p>
+        The library has the following record counts</p>
+        <ul>
+            <li><strong>Books:</strong> {{num_books}}</li>
+            <li><strong>Novel:</strong>{{num_novel}}</li>
+            <li><strong>Copies:</strong>{{num_instances}}</li>
+            <li><strong>Copies available:</strong>{{num_instance_available}}</li>
+            <li><strong>Authors:</strong>{{num_authors}}</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

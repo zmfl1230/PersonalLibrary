@@ -1,0 +1,110 @@
+body {
+  font-family: 'Nanum Gothic',  sans-serif;
+}
+
+.table {
+  clear: both;
+}
+
+.nav-extended {
+  background-color: #795548;
+}
+
+.nav-content #main-nav {
+  display: flex;
+  justify-content: center;
+}
+
+.container_index .valign-wrapper {
+  justify-content: center;
+}
+.container_index #container_title {
+  text-shadow: 2px 2px 2px gray;
+  font-size: 50px;
+  font-weight: bold;
+  color: #795548;
+  margin-top: 20px;
+}
+.container_index #container_p {
+  margin-top: 20px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+#add-book-btn-floating {
+  margin: 30px;
+}
+
+.row {
+  padding-top: 30px;
+  text-align: center;
+}
+.row .my_img {
+  padding-top: 0px;
+  text-align: center;
+  width: 80%;
+}
+.row p {
+  text-shadow: 2px 2px 2px gray;
+  font-family: 'Asap',  sans-serif;
+}
+
+.author_img {
+  float: left;
+  width: 10rem;
+  transform-origin: 0 100% 0;
+}
+
+.author_detail {
+  text-align: left;
+  margin-left: 13px;
+  float: right;
+  width: 82%;
+  text-shadow: 2px 2px 2px gray;
+  font-size: 50px;
+  font-weight: bold;
+  padding-left: 40px;
+}
+
+.content_index {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  border-bottom: 3px dotted navy;
+}
+.content_index p {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 20px;
+  margin-right: 0px;
+}
+.content_index ul {
+  text-align: center;
+  list-style: none;
+  margin-left: 30px;
+}
+
+.table-striped {
+  width: 100%;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+.table-striped a {
+  color: #795548;
+}
+.table-striped thead {
+  font-weight: bold;
+}
+
+#authorlist {
+  list-style: none;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 25px;
+  color: navy;
+}
+
+h1, h2, h3, h4 {
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,23 @@
+{% extends "catalog/base_generic.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="container_index">
+    <header id="container_title">Author List</header>
+    <p id="container_p">Welcome to LoclaLibrary, a website developed by <em>Jiyoung Developer Network</em>!</p>
+  </div>
+
+  {% if author_list %}
+  <ul id="authorlist">
+    {% for author in author_list %}
+    <li>
+      <a href="{{author.get_absolute_url}}">{{author.first_name}}{{ author.last_name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>There are no author in the library.</p>
+
+  {% endif %}
+</div>
+{% endblock %}

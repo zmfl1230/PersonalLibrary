@@ -1,0 +1,10 @@
+{% extends "catalog/base_generic.html" %}
+{% load static %}
+
+{% block title %} <title> Book List </title>  {% endblock %}
+
+{% block content %}
+<div class="container_index">
+{% include 'catalog/components/_book_list.html' with book_all=book_all contacts=contacts %}
+</div>
+{% endblock %}

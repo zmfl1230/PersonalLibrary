@@ -1,0 +1,114 @@
+{% load static %}
+
+<div class="container_index">
+    <div class="valign-wrapper">
+        <div id="container_title">Book List</div>
+
+    </div>
+</div>
+
+<div class="container_table" id="search_book_list">
+    <table class="table-striped">
+        <thead>
+        <tr>
+            <!--					<th>책 번호</th>-->
+            <th>책 이름</th>
+            <th>저자</th>
+            <th>장르</th>
+            <!--					<th>이용가능 책 수</th>-->
+            <th>Read or Not</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+         {% for contact in contacts.object_list %}
+        <tr>
+            <!--					<td>{{book.id}}</td>-->
+            <td><a href="{% url 'book_detail' contact.id %}">{{contact.bookname}}</a></td>
+            <td>{{contact.author}}</td>
+            <td>{% for genre in contact.genre.all %} {{ genre }} {% endfor %}</td>
+            <!--					<td>{{book.bookinstance_set.count}}</td>-->
+            <td>
+
+                {% if contact.already_read_set.all %}
+                <input type="button" class="already_read" name="{{contact.id}}" value="Already read">
+                {% else %}
+                <input type="button" class="already_read" name="{{contact.id}}" value="Not read">
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+        <tbody>
+    </table>
+</div>
+<table class="pagination container" style="table-layout: fixed; width: 50%;">
+    <tr>
+        {% if contacts.has_previous %}
+        <td><a class="paginator-letter"
+               href="?page={{ contact.previous_page_number }}">
+            <img src="{% static 'images/outline-chevron-left-black-24px.png' %}">
+        </a></td>
+        {% else %}
+        <td><a class="paginator-letter" >
+            <img src="{% static 'images/outline-chevron-left-lightgrey-24px.png' %}">
+        </a></td>
+        {% endif %}
+        {% for n in contacts.paginator.page_range %}
+        <td data-page-number="{{ n }}" class="page-number">
+            <a href="?page={{ n }}" style="color: rosybrown">{{ n }}</a>
+        </td>
+        {% endfor %}
+        {% if contacts.has_next %}
+        <td><a class="paginator-letter" href="?page={{ contact.next_page_number }}">
+            <img src="{% static 'images/outline-chevron-right-black-24px.png' %}">
+        </a></td>
+        {% else %}
+        <td><a class="paginator-letter">
+            <img src="{% static 'images/outline-chevron-right-lightgrey-24px.png' %}">
+        </a></td>
+        {% endif %}
+
+    </tr>
+</table>
+
+<div class="right-align">
+    <a href="{% url 'add_book' %}" class="btn-floating btn-large waves-effect waves-light brown "
+       id="add-book-btn-floating"><i class="material-icons right">add</i></a>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".already_read").click(function () {
+            let input = $(this);
+            let pk = input.attr('name')
+            $.ajax({//.already_read 버튼을 누르면 새로고침 없이 ajax로 서버와 통신하겠다.
+                type: "POST",//서버 전송 방법 지정
+                url: "{% url 'read' %}",//
+                data: {'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터 전송시 옵션
+                dataType: "json",
+
+                success: function (response) {// 통신 성공시 -
+                    console.log(this);
+                    if (response.message) {
+                        input.val('Already_read')
+                    } else {
+                        input.val('Not read')
+                    }
+                },
+                error: function (request, status, error) { // 통신 실패시
+                    alert("통신 실패")
+
+                },
+
+
+            })
+
+        })
+
+    });
+
+
+</script>

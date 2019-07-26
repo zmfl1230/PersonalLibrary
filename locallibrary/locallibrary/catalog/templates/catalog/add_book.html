@@ -1,0 +1,198 @@
+{% extends "catalog/base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <form class="col s12" >
+    <div class="row">
+      <div>"What would you want to read?"</div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="book_name" type="text" class="validate">
+        <label for="book_name">Book title</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="valign-wrapper">
+        <div class="input-field col s12">
+          <div class="valign-wrapper">
+            <label>Author name</label>
+            <i class="large material-icons modal-trigger" data-target="modal1" style="font-size: 1.5rem; color: rosybrown; padding-left: 10px; cursor: pointer;">add</i>
+          </div>
+          <!-- Modal Structure -->
+          <div id="modal1" class="modal">
+            <div class="modal-content">
+              <div>Who is the Author?</div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="first_name" type="text" class="validate">
+                  <label for="first_name">First name</label>
+                </div>
+                <div class="input-field col s12">
+                  <input id="last_name" type="text" class="validate">
+                  <label for="last_name">Last name</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a class="modal-close waves-effect waves-green btn-flat" id="author_add">Add</a>
+            </div>
+          </div>
+          <select id="author_name">
+            <option value="" disabled selected>what is author name?</option>
+            {% for name in authors %}
+            <option value="{{name.pk}}">{{name.first_name}}{{name.last_name}}</option>
+            {% endfor %}
+          </select>
+
+        </div>
+      </div>
+    </div>
+    <div class="valign-wrapper" style="padding-top: 20px;">
+      <div class="row col s12" style="padding: 0px">
+        <div class="valign-wrapper">
+          <label for="wrote_language">Language</label>
+          <i class="large material-icons modal-trigger" data-target="modal2" style="font-size: 1.5rem; color: rosybrown; padding-left: 30px; cursor: pointer;">add</i>
+        </div>
+        <!-- Modal Structure -->
+        <div id="modal2" class="modal">
+          <div class="modal-content">
+            <div>What is the book language?</div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="language" type="text" class="validate">
+                <label for="language">Language</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <a class="modal-close waves-effect waves-green btn-flat" id="language_add">Add</a>
+            </div>
+          </div>
+        <div class="input-field col s9" style="padding: 0px">
+          <select id="wrote_language">
+            {% for language in languages %}
+            <option value="{{language.id}}">{{language.L_type}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="row col s12">
+        <div class="valign-wrapper">
+          <label for="genre">Genre</label>
+          <i class="large material-icons modal-trigger" data-target="modal3" style="font-size: 1.5rem; color: rosybrown; padding-left: 30px; cursor: pointer;">add</i>
+        </div>
+        <!-- Modal Structure -->
+        <div id="modal3" class="modal">
+          <div class="modal-content">
+            <div>What is the book genre?</div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="input-genre" type="text" class="validate">
+                <label for="input-genre">Genre</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat" id="genre_add">Add</a>
+          </div>
+        </div>
+        <div class="input-field col s9" style="padding: 0px">
+          <select id="genre">
+            {% for genre in genres %}
+            <option value="{{genre.id}}">{{genre.name}}</option>
+            {% endfor %}
+          </select>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="summary" class="materialize-textarea" data-length="120"></textarea>
+        <label for="summary">Summary</label>
+          </div>
+        </div>
+
+    <button class="btn waves-effect waves-light brown lighten-3"  style="height: 40px;
+    width: 120px;">Add
+      <i class="material-icons left">fingerprint</i>
+    </button>
+
+  </form>
+
+
+
+
+</div>
+
+
+<script>
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
+
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+  $(document).ready(function() {
+    $('#author_add').click(function() {
+      var data = {};
+      data.first_name = $("#first_name").val();
+      data.last_name= $("#last_name").val();
+      data.csrfmiddlewaretoken = '{{csrf_token}}';
+
+
+      HA.ajaxPOST("{% url 'add_author' %}", {}, data, function (res) {
+        if (res['success']) {
+          // location.reload();
+          location.href = res.url;
+        }
+      });
+    })
+
+  })
+  $(document).ready(function() {
+    $('#language_add').click(function() {
+
+      var L_type =$("#language").val()
+
+
+      HA.ajaxPOST("{% url 'add_language' %}", {}, {'L_type' : L_type ,'csrfmiddlewaretoken': '{{ csrf_token }}'}, function (res) {
+        if (res['success']) {
+
+        }
+      });
+    })
+
+  })
+  $( document ).ready( function() {
+    $('button').click(function () {
+
+
+      var data = {};
+      data.bookname = $("#book_name").val();
+      data.author_id= $("#author_name").val();
+      data.summary = $("#summary").val();
+      data.genre = $("#genre").val();
+      data.wrote_language = $("#wrote_language").val();
+      data.csrfmiddlewaretoken = '{{csrf_token}}';
+
+
+      HA.ajaxPOST("{% url 'add_book' %}", {}, data, function (res) {
+
+        if (res['success']) {
+          location.href = res.url;
+        }
+      });
+
+
+    })
+
+  } );
+
+</script>
+{% endblock %}
