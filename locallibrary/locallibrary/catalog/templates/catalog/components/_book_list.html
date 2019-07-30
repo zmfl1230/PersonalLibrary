@@ -44,12 +44,13 @@
         {% endfor %}
         <tbody>
     </table>
+<p>{{value }}</p>
 </div>
 <table class="pagination container" style="table-layout: fixed; width: 50%;">
     <tr>
         {% if contacts.has_previous %}
         <td><a class="paginator-letter"
-               href="?page={{ contact.previous_page_number }}">
+               href="?search_value={{ value }}&page={{ contacts.previous_page_number }}">
             <img src="{% static 'images/outline-chevron-left-black-24px.png' %}">
         </a></td>
         {% else %}
@@ -59,11 +60,11 @@
         {% endif %}
         {% for n in contacts.paginator.page_range %}
         <td data-page-number="{{ n }}" class="page-number">
-            <a href="?page={{ n }}" style="color: rosybrown">{{ n }}</a>
+            <a href="?search_value={{ value }}&page={{ n }}" style="color: rosybrown">{{ n }}</a>
         </td>
         {% endfor %}
         {% if contacts.has_next %}
-        <td><a class="paginator-letter" href="?page={{ contact.next_page_number }}">
+        <td><a class="paginator-letter" href="?search_value={{ value }}&page={{ contacts.next_page_number }}&search_value={{ value }}">
             <img src="{% static 'images/outline-chevron-right-black-24px.png' %}">
         </a></td>
         {% else %}
@@ -72,6 +73,9 @@
         </a></td>
         {% endif %}
 
+        <script>
+            $("td.page-number[data-page-number={{ contacts.number }}]").addClass("page-now");
+        </script>
     </tr>
 </table>
 
@@ -91,6 +95,7 @@
                 dataType: "json",
 
                 success: function (response) {// 통신 성공시 -
+                    console.log(response)
                     console.log(this);
                     if (response.message) {
                         input.val('Already_read')
@@ -107,6 +112,9 @@
             })
 
         })
+
+        console.log($(this));
+
 
     });
 

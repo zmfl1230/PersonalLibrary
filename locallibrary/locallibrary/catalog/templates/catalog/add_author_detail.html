@@ -1,0 +1,47 @@
+{% extends "catalog/base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <form class="col s12" >
+    <div class="row">
+        <div>"Who is the author you want to add?"</div>
+    </div>
+
+      <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="myfile">
+          <button type="submit">Upload</button>
+      </form>
+
+
+
+      <div class="row">
+          <div class="input-field col s12">
+              <input id="first_name" type="text" class="validate">
+              <label for="first_name">First name</label>
+          </div>
+          <div class="input-field col s12">
+              <input id="last_name" type="text" class="validate">
+              <label for="last_name">Last name</label>
+          </div>
+      </div>
+
+
+
+      <button class="btn waves-effect waves-light brown lighten-3"  style="height: 40px;
+    width: 120px;">Add
+      <i class="material-icons left">fingerprint</i>
+    </button>
+
+  </form>
+
+
+
+
+</div>
+
+    <script>
+
+    </script>
+{% endblock %}

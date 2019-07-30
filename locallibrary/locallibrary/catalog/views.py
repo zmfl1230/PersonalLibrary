@@ -19,6 +19,7 @@ class TemplateView(generic.TemplateView):
 
 def search_base(request):
     value = request.GET.get('search_value', '')
+    # print(value, "몇번째?")
 
     if value:
         book_all = Book.objects.filter(
@@ -31,8 +32,7 @@ def search_base(request):
 
         try:
             contacts = book_paginator.page(book_page)
-            for i in contacts.object_list:
-                print(i)
+
         except PageNotAnInteger:
             contacts = book_paginator.page(1)
 
@@ -40,28 +40,13 @@ def search_base(request):
             contacts = book_paginator.page(book_paginator.num_pages)
 
         return JsonResponse({
-            'html': render_to_string('catalog/components/_book_list.html', {'book_all': book_all, 'contacts': contacts})
+            'html': render_to_string('catalog/components/_book_list.html',
+                                     {'book_all': book_all, 'contacts': contacts, 'value': value}),
+
         })
     book_all = Book.objects.all()
     return render(request, 'catalog/base_generic.html', {'book_all': book_all})
 
-
-# def listing(request):
-#     book_all = Book.objects.all()
-#     author_all = Author.objects.all()
-#     book_paginator = Paginator(book_all, 10)
-#     author_paginator = Paginator(author_all, 5)
-#
-#     book_page = request.GET.get('page', 1)
-#
-#     try:
-#         contacts = book_paginator.page(book_page)
-#     except PageNotAnInteger:
-#         contacts = book_paginator.page(1)
-#     except EmptyPage:
-#         contacts = book_paginator.page(book_paginator.num_pages)
-#     return render(request, 'catalog/book_list.html', {'contacts': contacts})
-#
 
 def autocomplete_tags(request):
     if request.is_ajax():
@@ -97,17 +82,21 @@ def index(request):  # views.index의 요청이오면.
 def book_list(request):
     book_all = Book.objects.all()
     num_book_available = BookInstance.objects.filter(status='a').count()
-    # #book class에서 author가 Person 테이블을 참조하고 있을때
+
+    value = request.GET.get('search_value', None)
+    # print(type(book_page)) str
+    print(value)
+    if value:
+        book_all = Book.objects.filter(
+            Q(bookname__contains=value) | Q(author__first_name__contains=value) | Q(
+                author__last_name__contains=value))
 
     book_paginator = Paginator(book_all, 5)
 
     book_page = request.GET.get('page', 1)
-    # print(type(book_page)) str
-
     try:
         contacts = book_paginator.page(book_page)
-        for i in contacts.object_list:
-            print(i)
+
     except PageNotAnInteger:
         contacts = book_paginator.page(1)
 
@@ -115,7 +104,7 @@ def book_list(request):
         contacts = book_paginator.page(book_paginator.num_pages)
 
     return render(request, 'catalog/book_list.html',
-                  {'book_all': book_all, 'num_book_available': num_book_available, 'contacts': contacts, })
+                  {'book_all': book_all, 'num_book_available': num_book_available, 'contacts': contacts,'value': value })
 
 
 class Bookdetail(generic.DetailView):
@@ -224,6 +213,11 @@ def add_author(request):
         context['url'] = reverse('add_book')
         context['success'] = True
         return JsonResponse(context)
+
+
+def add_author_detail(request):
+    # authors = Author.objects.all()
+    return render(request, 'catalog/add_author_detail.html', {})
 
 
 def add_language(request):

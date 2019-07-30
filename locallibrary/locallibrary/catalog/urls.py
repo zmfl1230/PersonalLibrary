@@ -22,6 +22,7 @@ urlpatterns = [
     # path('list/', views.listing, name='page_list'),
     path('books/', views.book_list, name='book_list'),
     path('authors/', views.Authorlist.as_view(), name='author_list'),
+    path('authors/add_detail', views.add_author_detail, name='add_author_detail'),
     path('book/<int:pk>/', views.Bookdetail.as_view(), name='book_detail'),
     path('readlist/', views.Readlist.as_view(), name='readlist'),
     path('author/<int:pk>/', views.author_detail, name='author_detail'),
@@ -32,7 +33,6 @@ urlpatterns = [
     path('search/', views.search_base, name='search_base'),
     path('auto/', views.autocomplete_tags, name='autocomplete_tags'),
     # path('books/read/<int:pk>/', views.read, name='read'),
-
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

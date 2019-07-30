@@ -32,7 +32,7 @@
             <div class="row" style="padding-top: 0px;">
                 <img class="my_img z-depth-4" src="{% static 'images/my_img.jpg' %}">
 
-                <form class="input-field col s9" style="margin-left:3rem; margin-top:3rem; ">
+                <form class="input-field col s9" id="search-module" style="margin-left:3rem; margin-top:3rem; ">
                     <label for="autocomplete-input">Search</label>
                     <div class="valign-wrapper">
                         <input type="text" id="autocomplete-input" class="autocomplete">
@@ -87,7 +87,7 @@
 
                 success: function (data) {// 통신 성공시 -
 
-                    // console.log(data['html']);
+                    {#console.log(data['html']);#}
                     $('.container_index').html(data['html'])
 
                 },
@@ -99,6 +99,8 @@
 
             });
         });
+
+
         // var autocompletedata = {
         //     "악의" : null,
         //     "백설공주에게 죽음을": null,
