@@ -78,17 +78,13 @@ class BookInstance(models.Model):
         return '{0} ({1})'.format(self.id, self.book.bookname)
 
 
-def profile_image_upload_directory(instance, filename):
-    return 'profile/upload/{0}'.format(filename)
-
-
 class Author(models.Model):
     """Model representing an author."""
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
     image = StdImageField(
-        upload_to=profile_image_upload_directory,
+        upload_to='profile/',
         verbose_name="저자 프로필 사진",
         blank=True,
         null=True,

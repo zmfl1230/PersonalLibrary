@@ -64,7 +64,7 @@
         </td>
         {% endfor %}
         {% if contacts.has_next %}
-        <td><a class="paginator-letter" href="?search_value={{ value }}&page={{ contacts.next_page_number }}&search_value={{ value }}">
+        <td><a class="paginator-letter" href="?search_value={{ value }}&page={{ contacts.next_page_number }}">
             <img src="{% static 'images/outline-chevron-right-black-24px.png' %}">
         </a></td>
         {% else %}

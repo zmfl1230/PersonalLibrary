@@ -78,7 +78,7 @@
 
         $('#book_search').click(function () {
             var search_value = $('#autocomplete-input').val();
-
+            console.log(search_value);
             $.ajax({//.already_read 버튼을 누르면 새로고침 없이 ajax로 서버와 통신하겠다.
                 type: "GET",//서버 전송 방법 지정
                 url: "{% url 'search_base' %}",//

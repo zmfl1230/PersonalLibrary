@@ -7,7 +7,8 @@ from django.db.models import Q
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
-
+from django.core.files.storage import FileSystemStorage
+from .forms import *
 
 # ctrl + alt + L
 
@@ -83,14 +84,15 @@ def book_list(request):
     book_all = Book.objects.all()
     num_book_available = BookInstance.objects.filter(status='a').count()
 
-    value = request.GET.get('search_value', None)
+    value = request.GET.get('search_value', '')
     # print(type(book_page)) str
     print(value)
     if value:
+        print(value)
         book_all = Book.objects.filter(
             Q(bookname__contains=value) | Q(author__first_name__contains=value) | Q(
                 author__last_name__contains=value))
-
+    print(book_all)
     book_paginator = Paginator(book_all, 5)
 
     book_page = request.GET.get('page', 1)
@@ -104,7 +106,8 @@ def book_list(request):
         contacts = book_paginator.page(book_paginator.num_pages)
 
     return render(request, 'catalog/book_list.html',
-                  {'book_all': book_all, 'num_book_available': num_book_available, 'contacts': contacts,'value': value })
+                  {'book_all': book_all, 'num_book_available': num_book_available, 'contacts': contacts,
+                   'value': value})
 
 
 class Bookdetail(generic.DetailView):
@@ -216,8 +219,34 @@ def add_author(request):
 
 
 def add_author_detail(request):
-    # authors = Author.objects.all()
-    return render(request, 'catalog/add_author_detail.html', {})
+    # print("111")
+    # if request.method == 'POST':
+    #     # and request.POST['myfile']:
+    #     print("222")
+    #     print(request.POST['myfile'])
+    #     print(request.FILES)
+    #     myfile = request.FILES['myfile']
+    #     print(myfile)
+    #     fs = FileSystemStorage()
+    #     filename = fs.save(myfile.name, myfile)
+    #     uploaded_file_url = fs.url(filename)
+    #     return render(request, 'catalog/add_author_detail.html', {
+    #         'uploaded_file_url': uploaded_file_url
+    #     })
+    if request.method == 'POST':
+        form = AuthorimageForm(request.POST, request.FILES)
+        print(request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'error': False, 'message': 'Uploaded Successfully'})
+        else:
+            return JsonResponse({'error': True, 'errors': form.errors})
+    else:
+        form = AuthorimageForm()
+        return render(request, 'catalog/add_author_detail.html', {'form': form})
+
+    # return render(request, 'catalog/add_author_detail.html', {})
 
 
 def add_language(request):
