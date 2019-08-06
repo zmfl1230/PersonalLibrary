@@ -1,0 +1,75 @@
+{% extends "catalog/base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12" >
+    <div class="row">
+        <div>"Who is the author you want to add?"</div>
+    </div>
+
+      <form enctype="multipart/form-data" action="{% url 'add_author_detail' %}" method="POST" id="uploadForm">
+          {% csrf_token %}
+{#          <div class="row">#}
+{#              <div class="input-field col s12">#}
+{#                  <input id="first_name" type="text" class="validate">#}
+{#                  <label for="first_name">First name</label>#}
+{#              </div>#}
+{#              <div class="input-field col s12">#}
+{#                  <input id="last_name" type="text" class="validate">#}
+{#                  <label for="last_name">Last name</label>#}
+          {#              </div>#}
+          {#              <div>Upload File</div>#}
+          {#              <input id="image" type="file" size="15" />#}
+          {#              <div class="error"></div>#}
+          {#          </div>#}
+          {{ form.as_p }}
+          <button class="btn waves-effect waves-light brown lighten-3" type="submit" style="height: 40px;
+    width: 120px;">Add
+              <i class="material-icons left">fingerprint</i>
+          </button>
+      </form>
+
+  </div>
+
+
+
+
+</div>
+
+    <script>
+
+        $( document ).ready( function() {
+            $("#uploadForm").submit(function(e){
+                e.preventDefault();
+                $form = $(this)
+                var formData = new FormData(this);
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        $('.error').remove();
+                        console.log(response);
+                        if(response.error){
+                            $.each(response.errors, function(name, error){
+                                error = '<small class="text-muted error">' + error + '</small>'
+                                $form.find('[name=' + name + ']').after(error);
+                            })
+                        }
+                        else{
+                            alert(response.message)
+                            {#alert("등록 성공")#}
+                            {#window.location = ""#}
+                        }
+
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

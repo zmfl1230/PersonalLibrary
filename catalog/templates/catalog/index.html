@@ -1,0 +1,60 @@
+{% extends "catalog/base_generic.html" %}
+{% load static %}
+{% block title %} <title>Local JY Library Home</title>{% endblock %}
+
+{% block content %}
+<div class="container_index">
+{#    #}
+{#    <div class="content_index">#}
+{#        <p>#}
+{#        The library has the following record counts</p>#}
+{#        <ul>#}
+{#            <li><strong>Books:</strong> {{num_books}}</li>#}
+{#            <li><strong>Novel:</strong>{{num_novel}}</li>#}
+    {#            <li><strong>Copies:</strong>{{num_instances}}</li>#}
+    {#            <li><strong>Copies available:</strong>{{num_instance_available}}</li>#}
+    {#            <li><strong>Authors:</strong>{{num_authors}}</li>#}
+    {#        </ul>#}
+    {#    </div>#}
+    <form class="input-field col s9" id="search-module" style="margin-left:3rem; margin-top:3rem; ">
+        <div class="valign-wrapper" >
+            <img src="https://ssl.pstatic.net/sstatic/search/nlogo/20190802174645.png" style="width:330px;">
+            <input type="text"  placeholder="Search more in Naver" id="input-naver" >
+            <i class="material-icons" id="submit-naver" style="cursor: pointer; ">search</i>
+        </div>
+    </form>
+</div>
+
+
+
+    <script>
+
+    $(document).ready(function () {
+
+        $('#submit-naver').click(function () {
+            var key = $('#input-naver').val();
+            console.log(key);
+            $.ajax({//.already_read 버튼을 누르면 새로고침 없이 ajax로 서버와 통신하겠다.
+                type: "GET",//서버 전송 방법 지정
+                url: "{% url 'search_api' %}",//
+                data: {'key': key}, // 서버로 데이터 전송시 옵션
+                dataType: "json",
+
+                success: function (data) {// 통신 성공시 -
+                    console.log(data);
+                     $('.container_index').html(data['html']);
+
+                },
+                error: function (request, status, error) { // 통신 실패시
+                    alert("통신 실패")
+
+                },
+
+
+            });
+        });
+    });
+
+
+    </script>
+{% endblock %}

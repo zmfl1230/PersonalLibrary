@@ -1,0 +1,59 @@
+{% extends "catalog/base_generic.html" %}
+
+
+{% block content %}
+<div class="container_index">
+  <header id="container_title">Already read</header>
+  <p id="container_p">Welcome to LoclaLibrary, a website developed by <em>Jiyoung Developer Network</em>!</p>
+</div>
+
+  {% if book_list %}
+ 
+ <h5>책별 구독 수</h5>
+<div class="container">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<td>책 이름</td>
+					<td>읽은 횟수</td>
+				</tr>
+
+			</thead>
+			<tbody>
+				{% for book in books %}
+				<tr>
+					<td>{{book.bookname}}</td>
+					<td></td>
+					
+				</tr>
+				{% endfor%}
+			
+			</tbody>
+			</table>
+</div>
+ <div class="container">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<td><B>책 번호</B></td>
+					<td><B>책 이름</B></td>
+					<td><B>읽은 날짜</B></td>
+					
+				</tr>
+			</thead>
+			
+			<tbody>
+				{% for book in book_list %}
+				<tr>
+					<td>{{book.id}}</td>
+					<td><a href="{% url 'book_detail' book.id %}">{{book.book}}</a></td>
+					<td>{{book.due_date}}</td>
+				</tr>
+
+				{% endfor %}
+				<tbody>
+				</table>
+ </div>
+	
+  {% endif %}       
+{% endblock %}
